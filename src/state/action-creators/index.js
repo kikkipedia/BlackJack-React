@@ -61,3 +61,27 @@ export const updateCompAltPoints = (points) => {
         })
     }
 }
+
+export const resetDeck = () => {
+    return (dispatch) => {
+        dispatch({
+            type: "resetDeck"
+        })
+    }
+}
+
+export const resetPlayer = () => {
+    return (dispatch) => {
+        dispatch({
+            type: "resetPlayer"
+        })
+    }
+}
+
+export const resetComputer = () => {
+    return (dispatch) => {
+        dispatch({
+            type: "resetComputer"
+        })
+    }
+}

@@ -24,6 +24,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 cards: newArr
             }
+        case "resetPlayer":
+            return initialState
         default:
             return state
     }
