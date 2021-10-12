@@ -16,20 +16,47 @@ export const updatePlayerPoints = (points) => {
     }
 }
 
-export const restartPlayer = (points) => {
+export const restartPlayer = (player) => {
     return (dispatch) => {
         dispatch({
             type: "playerZero",
-            payload: points
+            payload: player
         })
     }
 }
 
-export const restartComp = (points) => {
+export const restartComp = (computer) => {
     return (dispatch) => {
         dispatch({
             type: "compZero",
-            payload: points
+            payload: computer
+        })
+    }
+}
+
+export const getDeckId = (id) => {
+    return (dispatch) => {
+        dispatch({
+            type: "updateDeck",
+            payload: id
+        })
+    }
+}
+
+export const addPlayerCards = (card) => {
+    return (dispatch) => {
+        dispatch({
+            type: "addPlayerCards",
+            payload: card
+        })
+    }
+}
+
+export const addComputerCards = (card) => {
+    return (dispatch) => {
+        dispatch({
+            type: "addComputerCards",
+            payload: card
         })
     }
 }
