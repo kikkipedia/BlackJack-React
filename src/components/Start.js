@@ -26,7 +26,8 @@ const Start = () => {
     const dispatch = useDispatch()
     const {addPlayerCards, addComputerCards, updatePlayerAltPoints, updatePlayerPoints, updateCompAltPoints, updateComPoints} = bindActionCreators(actionCreators, dispatch)
     const [hideCard, showCard] = useState(true)
-
+    const [showButtons, setShowButtons] = useState(true)
+    const [showAlt, setShowAlt] = useState(false)
 
     const drawOneCard = () => {
         let card = drawCard(deckId, 1)
@@ -49,7 +50,8 @@ const Start = () => {
         .then(data => {
             addPlayerCards(data.cards)
             if(data.cards[0].value === 'ACE') {
-                updatePlayerAltPoints()                    
+                updatePlayerAltPoints()
+                setShowAlt(true)                    
             }
             else updatePlayerPoints(getCardValue(data.cards[0].value))                
         })
@@ -57,15 +59,23 @@ const Start = () => {
     }
 
     const handleStop = () => {
+        setShowButtons(false)
         //if computer points || altPoints < 18
         if(computer.points < 18 || computer.altPoints < 18) {
             computerDraw()
+            revealCard()
         }
         else revealCard()
     }
 
     const revealCard = () => {
         showCard(false)
+        //who wins?
+    }
+
+    //calculates winner
+    const getWinner = () => {
+
     }
 
     return(
@@ -86,7 +96,7 @@ const Start = () => {
                             <img src={item.image} alt="card" className="cardImage" key={i}/>
                         )}
                     </Grid>
-                    {computer.points} (or {computer.altPoints})
+                    <p>Points: {computer.points} <span>/ {computer.altPoints}</span></p>
                 </Grid>
                 <Grid item xs>
                     <Typography variant="button" display="block" gutterBottom>
@@ -97,8 +107,17 @@ const Start = () => {
                             <img src={item.image} alt="card" className="cardImage" key={i}/>
                         )}
                     </Grid>
-                    <p>Points: {player.points} <span>(or {player.altPoints})</span></p>
-                    <p><Button onClick={playerDraw}>Draw</Button><Button onClick={handleStop}>Stop</Button></p>
+                    <p>Points: {player.points} 
+                    {showAlt ? (
+                        <span>/ {player.altPoints}</span>
+                    ) : (null)}
+                    </p>
+                    {showButtons ? (
+                        <p><Button onClick={playerDraw}>Draw</Button><Button onClick={handleStop}>Stop</Button></p>
+                    ) : (
+                        <p><Button>Restart</Button></p>
+                    )}
+                    
                 </Grid>
             </Grid>
         </div>
