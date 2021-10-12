@@ -1,5 +1,6 @@
 const initialState = {
     points: 0,
+    altPoints: 0,
     cards: []
 }
 

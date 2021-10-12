@@ -16,23 +16,6 @@ export const updatePlayerPoints = (points) => {
     }
 }
 
-export const restartPlayer = (player) => {
-    return (dispatch) => {
-        dispatch({
-            type: "playerZero",
-            payload: player
-        })
-    }
-}
-
-export const restartComp = (computer) => {
-    return (dispatch) => {
-        dispatch({
-            type: "compZero",
-            payload: computer
-        })
-    }
-}
 
 export const getDeckId = (id) => {
     return (dispatch) => {

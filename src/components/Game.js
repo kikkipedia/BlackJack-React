@@ -1,15 +1,18 @@
 import { useEffect } from 'react'
 import { Button } from "@mui/material"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../state/index'
 import { fetchDeck, drawCard } from "../api"
 import { useHistory } from 'react-router'
+import { getCardValue } from '../app/getCardValue'
 
 const Game = () => {
 
     const dispatch = useDispatch()
-    const {getDeckId, addPlayerCards, addComputerCards} = bindActionCreators(actionCreators, dispatch)
+    const computer = useSelector((state) => state.computer)
+    const player = useSelector((state) => state.player)
+    const {getDeckId, addPlayerCards, addComputerCards, updatePlayerPoints, updateComPoints} = bindActionCreators(actionCreators, dispatch)
     const history = useHistory()
     
     useEffect(() => {
@@ -25,15 +28,17 @@ const Game = () => {
             //draw player starting cards
             drawCard(data.deck_id, 1)
             .then(data => {
-                console.log(data)
                 addPlayerCards(data.cards)
+                updatePlayerPoints(getCardValue(data.cards[0].value))
             })
         })
     },[])
 
+
     const startGame = () => {
         history.push("/game")
     }
+
 
     return(
         <div className="content">
