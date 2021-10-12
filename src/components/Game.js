@@ -23,7 +23,6 @@ const Game = () => {
             .then(data => {
                 addComputerCards(data.cards)
                 for(let i = 0; i < data.cards.length; i++) {
-                    console.log("here")
                     if(data.cards[i].value === 'ACE'){
                         updateCompAltPoints()
                     }
@@ -37,8 +36,7 @@ const Game = () => {
                 if(data.cards[0].value === 'ACE') {
                     updatePlayerAltPoints()                    
                 }
-                else updatePlayerPoints(getCardValue(data.cards[0].value))
-                
+                else updatePlayerPoints(getCardValue(data.cards[0].value))      
             })
         })
     },[])
@@ -51,7 +49,7 @@ const Game = () => {
 
     return(
         <div className="content">
-            <h3>Black Jack</h3>
+            <h3>6 Deck Black Jack</h3>
             <Button variant="contained" color="secondary" onClick={startGame} size="small">New game</Button>          
         </div>
     )

@@ -9,7 +9,8 @@ const reducer = (state = initialState, action) => {
         case "compPoints":
             return {
                 ...state,
-                points: state.points + action.payload
+                points: state.points + action.payload,
+                altPoints: state.altPoints + action.payload
             }
         case "computerAlt":
             return {
@@ -18,9 +19,11 @@ const reducer = (state = initialState, action) => {
                 altPoints: state.points + 14
             }
         case "addComputerCards":
-            return Object.assign({}, state, {
-                cards: action.payload
-              })
+            const newArr = state.cards.concat(action.payload)
+            return {
+                ...state,
+                cards: newArr
+            }
         default:
             return state
     }

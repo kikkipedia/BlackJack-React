@@ -1,6 +1,6 @@
 //fetch deck id
 export const fetchDeck = () => {
-    return fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
+    return fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6")
     .then(response => response.json())
 }
 
