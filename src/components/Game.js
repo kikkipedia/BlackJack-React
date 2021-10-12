@@ -24,6 +24,8 @@ const Game = () => {
             drawCard(data.deck_id, 2)
             .then(data => {
                 addComputerCards(data.cards)
+                updateComPoints(getCardValue(data.cards[0].value))
+                updateComPoints(getCardValue(data.cards[1].value))
             })
             //draw player starting cards
             drawCard(data.deck_id, 1)

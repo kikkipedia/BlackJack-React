@@ -7,9 +7,10 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case "compPoints":
-            return state.points + action.payload
-        case "compZero":
-            return action.payload
+            return {
+                ...state,
+                points: state.points + action.payload
+            }
         case "addComputerCards":
             return Object.assign({}, state, {
                 cards: action.payload
