@@ -9,7 +9,14 @@ const reducer = (state = initialState, action) => {
         case "playerPoints":
             return {
                 ...state,
-                points: state.points + action.payload
+                points: state.points + action.payload,
+                altPoints: state.points + action.payload
+            }
+        case "playerAlt":
+            return {
+                ...state,
+                points: state.points + 1,
+                altPoints: state.points + 14
             }
         case "addPlayerCards":
             return Object.assign({}, state, {

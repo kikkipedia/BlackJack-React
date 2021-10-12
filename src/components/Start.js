@@ -58,7 +58,7 @@ const Start = () => {
                         player
                     </Typography>
                     <p><img src={player.cards[0].image} alt="card" className="cardImage"/></p>
-                    <p>Points: {player.points} <span>(or --)</span></p>
+                    <p>Points: {player.points} <span>(or {player.altPoints})</span></p>
                     <p><Button>Draw</Button><Button>Stop</Button></p>
                 </Grid>
             </Grid>

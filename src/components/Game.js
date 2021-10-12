@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Button } from "@mui/material"
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../state/index'
 import { fetchDeck, drawCard } from "../api"
@@ -10,9 +10,7 @@ import { getCardValue } from '../app/getCardValue'
 const Game = () => {
 
     const dispatch = useDispatch()
-    const computer = useSelector((state) => state.computer)
-    const player = useSelector((state) => state.player)
-    const {getDeckId, addPlayerCards, addComputerCards, updatePlayerPoints, updateComPoints} = bindActionCreators(actionCreators, dispatch)
+    const {getDeckId, addPlayerCards, addComputerCards, updatePlayerPoints, updateComPoints, updateCompAltPoints, updatePlayerAltPoints} = bindActionCreators(actionCreators, dispatch)
     const history = useHistory()
     
     useEffect(() => {
@@ -24,14 +22,23 @@ const Game = () => {
             drawCard(data.deck_id, 2)
             .then(data => {
                 addComputerCards(data.cards)
-                updateComPoints(getCardValue(data.cards[0].value))
-                updateComPoints(getCardValue(data.cards[1].value))
+                for(let i = 0; i < data.cards.length; i++) {
+                    console.log("here")
+                    if(data.cards[i].value === 'ACE'){
+                        updateCompAltPoints()
+                    }
+                    else updateComPoints(getCardValue(data.cards[i].value))
+                }                
             })
             //draw player starting cards
             drawCard(data.deck_id, 1)
             .then(data => {
                 addPlayerCards(data.cards)
-                updatePlayerPoints(getCardValue(data.cards[0].value))
+                if(data.cards[0].value === 'ACE') {
+                    updatePlayerAltPoints()                    
+                }
+                else updatePlayerPoints(getCardValue(data.cards[0].value))
+                
             })
         })
     },[])
