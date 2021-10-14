@@ -26,7 +26,7 @@ const Start = () => {
     const player = useSelector((state) => state.player)
     const deckId = useSelector((state) => state.deck)
     const dispatch = useDispatch()
-    const {addPlayerCards, addComputerCards, updatePlayerAltPoints, updatePlayerPoints, updateCompAltPoints, updateComPoints, resetDeck, resetPlayer, resetComputer} = bindActionCreators(actionCreators, dispatch)
+    const {addPlayerCards, addComputerCards, updatePlayerAltPoints, updatePlayerPoints, updateCompAltPoints, updateComPoints} = bindActionCreators(actionCreators, dispatch)
     const [hideCard, showCard] = useState(true)
     const [showButtons, setShowButtons] = useState(true)
     const [showAlt, setShowAlt] = useState(false)
@@ -98,7 +98,7 @@ const Start = () => {
     const revealCard = () => {
         showCard(false)
         getWinner()
-        showComputerPoints(true)
+        setShowComputerPoints(true)
     }
 
     //calculates winner
@@ -126,14 +126,11 @@ const Start = () => {
 
     //set all to initial state
     const restart = () => {
-        resetDeck()
-        resetComputer()
-        resetPlayer()
         history.push("/")
     }
 
     return(
-        <div className="content">
+        <div className="content inner">
             <Grid container>
                 <Grid item xs>
                     <Typography variant="button" display="block" gutterBottom>

@@ -6,14 +6,19 @@ import { actionCreators } from '../state/index'
 import { fetchDeck, drawCard } from "../api"
 import { useHistory } from 'react-router'
 import { getCardValue } from '../app/getCardValue'
+import blackjackBand from '../images/blackjackBand.jpg'
 
 const Game = () => {
 
     const dispatch = useDispatch()
-    const {getDeckId, addPlayerCards, addComputerCards, updatePlayerPoints, updateComPoints, updateCompAltPoints, updatePlayerAltPoints} = bindActionCreators(actionCreators, dispatch)
+    const {getDeckId, addPlayerCards, addComputerCards, updatePlayerPoints, updateComPoints, updateCompAltPoints, updatePlayerAltPoints, resetDeck, resetPlayer, resetComputer} = bindActionCreators(actionCreators, dispatch)
     const history = useHistory()
     
     useEffect(() => {
+        //empty all data in store
+        resetDeck()
+        resetComputer()
+        resetPlayer()
         //fetch deck id and set in store
         fetchDeck()
         .then(data => {
@@ -48,8 +53,9 @@ const Game = () => {
 
 
     return(
-        <div className="content">
-            <h3>6 Deck Black Jack</h3>
+        <div className="content inner">
+            <img src={blackjackBand} alt="Black Jack" style={{maxWidth: "55vw", borderRadius: "5%"}}/>
+            <br/><br/>
             <Button variant="contained" color="secondary" onClick={startGame} size="small">New game</Button>          
         </div>
     )

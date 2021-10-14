@@ -1,18 +1,44 @@
+ body {
+  background-color: rgb(92, 169, 172);
+ }
+
 .App {
   text-align: center;
-  background-color: rgb(92, 169, 172);
-  padding-left: 20vw;
-  padding-right: 20vw;
-  padding-top: 10vw;
-  padding-bottom: 10vw;
+/*   padding-left: 5vw;
+  padding-right: 5vw;
+  padding-top: 5vw;
+  padding-bottom: 5vw; */
   font-family: 'Roboto';
+}
+
+/* vertically center content */
+.outer {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  /* Whatever width you want */
 }
 
 .content {
   background-color: white;
   border: 2px solid grey;
   border-radius: 5px;
-  padding: 20px;
+  padding: 15px;
+  padding-top: 30px;
 }
 
 .cardImage {
