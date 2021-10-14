@@ -27,23 +27,31 @@ const Start = () => {
     const deckId = useSelector((state) => state.deck)
     const dispatch = useDispatch()
     const {addPlayerCards, addComputerCards, updatePlayerAltPoints, updatePlayerPoints, updateCompAltPoints, updateComPoints} = bindActionCreators(actionCreators, dispatch)
+
     const [hideCard, showCard] = useState(true)
     const [showButtons, setShowButtons] = useState(true)
-    const [showAlt, setShowAlt] = useState(false)
     const [showComputerPoints, setShowComputerPoints] = useState(false)
     const history = useHistory()
     const [playerAce, setPlayerAce] = useState(false)
     const [computerAce, setComputerAce] = useState(false)
+    const [computerText, setComputerText] = useState('')
+    const [playerText, setPlayerText] = useState('')
 
     //checks if player/computer gets over 21 & lose
     useEffect(() => {
-        if(player.points > 21 && player.altPoints > 21){
-            alert("You loose!")
-            endGame()
-        }
-        if(computer.points > 21 && computer.altPoints > 21){
+        if (player.points === 21 || player.altPoints === 21) {
             alert("You win!!")
-            endGame()
+            setShowButtons(false)
+        }
+        else if(player.points > 21 && player.altPoints > 21){
+            alert("You loose!")
+            setPlayerText('F U L L !')
+            setShowButtons(false)            
+        }
+        else if(computer.points > 21 && computer.altPoints > 21){
+            alert("You win!!")
+            setComputerText('F U L L !')
+            setShowButtons(false)    
         }
     },[player, computer])
 
@@ -74,28 +82,28 @@ const Start = () => {
             addPlayerCards(data.cards)
             if(data.cards[0].value === 'ACE') {
                 updatePlayerAltPoints()
-                setShowAlt(true)
                 setPlayerAce(true)                    
             }
             else updatePlayerPoints(getCardValue(data.cards[0].value))                
         })
-        if(computer.points < 18 || computer.altPoints < 18) {
+        //computer must draw
+        if(player.points < 21 || player.altPoints < 21) {
             computerDraw()
         }
-        else revealCard()
+        else console.log("stopped")
     }
 
     //player choose to stay
     const handleStop = () => {
         setShowButtons(false)
         if(computer.points < 18 || computer.altPoints < 18) {
-            computerDraw()
             revealCard()
         }
         else revealCard()
     }
 
     const revealCard = () => {
+        computerDraw()
         showCard(false)
         getWinner()
         setShowComputerPoints(true)
@@ -104,20 +112,32 @@ const Start = () => {
     //calculates winner
     const getWinner = () => {
         //if no ace has been drawn
-        if(computerAce && playerAce){
-            console.log("both have ace")
+        const compClosest = calculateWinner(computer.points, computer.altPoints)
+        const playerClosest = calculateWinner(player.points, player.altPoints)
+        console.log("computer best: " + compClosest)
+        console.log("player best: " + playerClosest)
+
+        if (compClosest === playerClosest) {
+            console.log("draw!")
         }
-        else if(computerAce) {
-            console.log("computer has ace")
-        }
-        else if(playerAce){
-            console.log("player has ace")
-        }
-        else console.log("no aces")
-        console.log("computer: ", computer.points, computer.altPoints)
-        console.log("playerr: ", player.points, player.altPoints)
+        else {
+            if(computerAce && playerAce){
+                console.log("both have ace")
+            }
+            else if(computerAce) {
+                console.log("computer has ace")
+            }
+            else if(playerAce){
+                console.log("player has ace")
+            }
+            else if(computer.points > player.points) {
+                console.log("no aces")
+                console.log("computer win", computer.points)
+            }
+        }        
     }
 
+    //computer gets the hidden card
     const endGame = () => {
         showCard(false)
         setShowComputerPoints(true)
@@ -139,18 +159,18 @@ const Start = () => {
                     <Grid>
                         {hideCard ? (
                             <img src="https://opengameart.org/sites/default/files/styles/medium/public/card%20back%20purple.png" alt="secret" className="cardImage"/>
-                        ) : (
-                            <img src={computer.cards[0].image} alt="hiddenCard" className="cardImage"/>
-                        )}
-                        
-                        {computer.cards.slice(1).map((item, i) => 
+                        ) : (null)}
+                        {computer.cards.map((item, i) => 
                             <img src={item.image} alt="card" className="cardImage" key={i}/>
                         )}
                     </Grid>
                     {showComputerPoints ? (
-                        <p>{computer.points} <span>/ {computer.altPoints}</span></p>
+                        <p>{computer.points}</p>
                     ) : (null)}
-                    {/*  */}
+                    {computerAce ? (
+                        <p>{computer.altPoints}</p>
+                    ) : (null)}
+                    <h3>{computerText}</h3>
                 </Grid>
                 <Grid item xs>
                     <Typography variant="button" display="block" gutterBottom>
@@ -162,10 +182,11 @@ const Start = () => {
                         )}
                     </Grid>
                     <p>{player.points} 
-                    {showAlt ? (
-                        <span>/ {player.altPoints}</span>
+                    {playerAce ? (
+                        <span> or {player.altPoints}</span>
                     ) : (null)}
                     </p>
+                    <h3>{playerText}</h3>
                     {showButtons ? (
                         <div>
                         <p><Button variant="contained" color="secondary" onClick={playerDraw}>hit me</Button></p>

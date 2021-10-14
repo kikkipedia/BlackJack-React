@@ -23,18 +23,16 @@ const Game = () => {
         fetchDeck()
         .then(data => {
             getDeckId(data.deck_id)
-            //draw computer starting cards
-            drawCard(data.deck_id, 2)
+            //draw computer starting card
+            drawCard(data.deck_id, 1)
             .then(data => {
                 addComputerCards(data.cards)
-                for(let i = 0; i < data.cards.length; i++) {
-                    if(data.cards[i].value === 'ACE'){
+                if(data.cards[0].value === 'ACE'){
                         updateCompAltPoints()
-                    }
-                    else updateComPoints(getCardValue(data.cards[i].value))
-                }                
+                }
+                else updateComPoints(getCardValue(data.cards[0].value))             
             })
-            //draw player starting cards
+            //draw player starting card
             drawCard(data.deck_id, 1)
             .then(data => {
                 addPlayerCards(data.cards)
@@ -54,7 +52,7 @@ const Game = () => {
 
     return(
         <div className="content inner">
-            <img src={blackjackBand} alt="Black Jack" style={{maxWidth: "55vw", borderRadius: "5%"}}/>
+            <img src={blackjackBand} alt="Black Jack" style={{maxWidth: "55vw", borderRadius: "5%"}} className="band"/>
             <br/><br/>
             <Button variant="contained" color="secondary" onClick={startGame} size="small">New game</Button>          
         </div>
