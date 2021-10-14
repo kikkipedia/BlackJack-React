@@ -36,24 +36,25 @@ const Start = () => {
     const [computerAce, setComputerAce] = useState(false)
     const [computerText, setComputerText] = useState('')
     const [playerText, setPlayerText] = useState('')
+    const [resultText, setResultText] = useState('')
 
     //checks if player/computer gets over 21 & lose
     useEffect(() => {
         if (player.points === 21 || player.altPoints === 21) {
-            alert("You win!!")
+            setResultText("PLAYER WINS")  
             setShowButtons(false)
         }
         else if(player.points > 21 && player.altPoints > 21){
-            alert("You loose!")
             setPlayerText('F U L L !')
-            setShowButtons(false)            
+            setShowButtons(false)  
+            setResultText("COMPUTER WINS")            
         }
         else if(computer.points > 21 && computer.altPoints > 21){
-            alert("You win!!")
             setComputerText('F U L L !')
-            setShowButtons(false)    
+            setShowButtons(false)
+            setResultText("PLAYER WINS")    
         }
-    },[player, computer])
+    },[player, computer, showButtons])
 
 
     //draw card from the decks
@@ -96,52 +97,52 @@ const Start = () => {
     //player choose to stay
     const handleStop = () => {
         setShowButtons(false)
-        if(computer.points < 18 || computer.altPoints < 18) {
-            revealCard()
-        }
-        else revealCard()
+        revealCard()
     }
 
     const revealCard = () => {
-        computerDraw()
-        showCard(false)
-        getWinner()
-        setShowComputerPoints(true)
+        // if(computer.points < 18 || computer.altPoints < 18) {
+            computerDraw()
+            showCard(false)
+            getWinner()
+            setShowComputerPoints(true)
+    //     }
+    //     showCard(false)
+    //     getWinner()
+    //     setShowComputerPoints(true)      
     }
 
     //calculates winner
     const getWinner = () => {
-        //if no ace has been drawn
-        const compClosest = calculateWinner(computer.points, computer.altPoints)
-        const playerClosest = calculateWinner(player.points, player.altPoints)
-        console.log("computer best: " + compClosest)
-        console.log("player best: " + playerClosest)
-
-        if (compClosest === playerClosest) {
-            console.log("draw!")
+        let compClosest
+        let playerClosest
+        let winner
+        //if no aces has been drawn
+        if(!computerAce && !playerAce){
+            if (computer.points === player.points) {
+                setResultText("Draw! No one wins!")
+            }
+            else if (computer.points === 21) {
+                setResultText("Computer wins!")
+            }
+            else {
+                winner = calculateWinner(computer.points, player.points)
+                console.log("1. winner is: " + winner)
+            }            
         }
-        else {
-            if(computerAce && playerAce){
-                console.log("both have ace")
-            }
-            else if(computerAce) {
-                console.log("computer has ace")
-            }
-            else if(playerAce){
-                console.log("player has ace")
-            }
-            else if(computer.points > player.points) {
-                console.log("no aces")
-                console.log("computer win", computer.points)
-            }
-        }        
-    }
-
-    //computer gets the hidden card
-    const endGame = () => {
-        showCard(false)
-        setShowComputerPoints(true)
-        setShowButtons(false)
+        //computer has ace
+        else if (computerAce) {
+            compClosest = calculateWinner(computer.points, computer.altPoints)
+            winner = calculateWinner(compClosest, player.points)
+            console.log("2. winner is: " + winner)
+        }
+        //player has ace
+        else if (playerAce) {
+            playerClosest = calculateWinner(player.points, player.altPoints) 
+            winner = calculateWinner(playerClosest, computer.points)
+            console.log("3. winner is: " + winner)
+        }
+        else console.log("something went wrong here?")
     }
 
     //set all to initial state
@@ -198,6 +199,7 @@ const Start = () => {
                     
                 </Grid>
             </Grid>
+            <span>{resultText}</span>
         </div>
     )
 }

@@ -9,7 +9,7 @@ export const calculateWinner = (firstNumber, secondNumber) => {
         if (second < first) {
             return secondNumber
         }
-        return 0
+        return "here"
     }
-    else return false
+    else return "draw"
 }

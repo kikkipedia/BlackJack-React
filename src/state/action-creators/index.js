@@ -44,20 +44,18 @@ export const addComputerCards = (card) => {
     }
 }
 
-export const updatePlayerAltPoints = (points) => {
+export const updatePlayerAltPoints = () => {
     return (dispatch) => {
         dispatch({
-            type: "playerAlt",
-            payload: points
+            type: "playerAlt"
         })
     }
 }
 
-export const updateCompAltPoints = (points) => {
+export const updateCompAltPoints = () => {
     return (dispatch) => {
         dispatch({
-            type: "computerAlt",
-            payload: points
+            type: "computerAlt"
         })
     }
 }
